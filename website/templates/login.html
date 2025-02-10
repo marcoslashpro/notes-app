@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+	<div class="container-fluid login-container">
+		<div class="row justify-content-center text-center vh-100 text-bg-dark">
+			<div class="col-4">
+				<br>
+				<br>
+				<header class="login-header">Login</header>
+				<hr>
+				<br>
+				<br>
+				<form class="my-form" method="POST">
+					<label class="form-label">Enter Email</label>
+					<input type="email" class="form-control" name="email" id="email" placeholder="Enter email">
+					<br>
+					<label class="form-label">Enter password</label>
+					<input class="form-control" type="text" name="password" id="password" placeholder="Enter password">
+					<br>
+					<input type="submit" class="btn btn-secondary shadow" value="Confirm">
+					<br>
+				</form>
+				<footer class="text-center py-3 bg-dark mt-5">
+					<p class="mb-0 text-light">Not logged in? <a class="text-light" href="{{ url_for('auth.signup') }}">Sign-Up</a></p>
+				</footer>
+			</div>
+		</div>
+	</div>
+{% endblock %}

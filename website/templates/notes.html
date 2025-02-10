@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+{% if note %}
+{{ note.note_title }}
+{% else %}
+Create note
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Main Content -->
+<main class="content flex-grow-1 p-4 bg-dark text-center">
+    <div class="container-fluid d-flex flex-column align-items-center justify-content-center" id="noteContainer" style="margin-top: 50px;">
+        <form class="w-50 p-4 bg-secondary rounded shadow-lg" id="noteForm" method="POST">
+            <!-- Title Input -->
+            <input class="form-control mb-3 custom-input-title text-bg-secondary text-dark" 
+                   name="title" id="noteTitle" placeholder="Insert title" 
+                   value="{% if note %}{{ note.note_title }}{% endif %}"
+                   onkeydown="return event.key !== 'Enter';">
+
+            <!-- Note Textarea -->
+            <textarea class="form-control mb-3 custom-input-body text-bg-secondary text-dark" 
+                      name="content" id="noteContent" placeholder="Let it out..." rows="6"
+                      onkeydown="return event.key !== 'Enter';">{% if note %}{{ note.note_content }}{% endif %}</textarea>
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-dark w-100 custom-btn" id='saveNoteButton' action="{{ url_for('views.create_note') }}">Save</button>
+        </form>
+    </div>
+</main>
+
+
+{% endblock %}

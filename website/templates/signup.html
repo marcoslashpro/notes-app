@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<main class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<div class="container-fluid text-center justify-content-center header-container">
+				<header class="form-header">Sign Up</header>
+			</div>
+		</div>
+	</div>
+		<div class="row justify-content-center vh-100 text-center align-items-center text-bg-dark">
+			<div class="col-4 form-container">
+				<br >
+				<form class="my-form" method="POST">
+						<label class="form-label">Email</label>
+						<input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" />
+						<br>
+						<div class="row justify-content-center text-center align-items-center">
+							<div class="col">
+								<label class="form-label">Username</label>
+								<input class="form-control" name="username" id="username" placeholder="Enter your Username">
+							</div>
+						</div>
+						<br>
+						<label class="form-label">Enter password</label>
+						<input class="form-control" name="passw1" id="passw1" placeholder="Enter password">
+						<br>
+						<label class="form-label">Confirm password</label>
+						<input class="form-control" name="passw2" id="passw2" placeholder="Confirm password">
+						<br>
+						<button type="submit" class="btn btn-secondary shadow" style="margin: 0px;">Confirm</button>
+				</form>
+				<div class="text-center py-3 bg-dark mt-5">
+					<p class="mb-0 text-light text-center">Already logged in? <a class="text-light" href="{{ url_for('auth.login') }}">Login</a></p>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+{% endblock %}

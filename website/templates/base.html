@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="bg-dark text-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">CocktAil</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#_navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="_navbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('views.display_note') }}">Take Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Ask AI</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Profile</a>
+                    <ul class="dropdown-menu">
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{{ url_for('views.profile_page', user_id=user.id) }}">View Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{{ url_for('auth.signup') }}">Sign Up</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Search Form -->
+            <div class="position-relative w-25">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search notes..." id="searchInput" autocomplete="off">
+                </form>
+
+                <!-- Styled Search Dropdown -->
+                <div class="dropdown-menu search-card shadow-lg p-2 rounded" id="searchDisplay">
+                    <ul class="list-group" id="searchMenu">
+                        <!-- Search items will be inserted dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="container-fluid under-nav h-100 fade-out">
+    <div class="row">
+        <div class="col text-center">
+            <div class="alert alert-{% if category == 'error' %}danger{% else %}success{% endif %} fade show fade-out"
+            role="alert">
+                {{ message }}
+                <span aria-hidden="true">&times;</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+{% block content %}{% endblock %}
+
+<!-- Footer -->
+<footer class="text-center py-3 bg-dark mt-5">
+    <p class="mb-0 text-secondary">&copy; I'll never quit 'til I make it.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</body>
+</html>

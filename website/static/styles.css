@@ -1,0 +1,144 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Navbar */
+.navbar {
+    padding: 10px 0;
+    border-bottom: 1px solid darkgrey;
+    z-index: 1050;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffcc00;
+}
+
+.under-nav {
+    margin-top: 70px !important;
+}
+
+/* Centered Content */
+.content {
+    min-height: 100vh;
+}
+
+/* Note-Taking Container */
+.note-container {
+    width: 100%;
+    padding: 2rem;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Textarea */
+.custom-textarea {
+    height: 200px;
+    border-radius: 8px;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+    transition: 0.3s;
+}
+
+.custom-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Custom Button */
+.custom-btn {
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+.custom-btn:hover {
+    background: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header-container {
+    margin-top: 10px;
+    width: 100%;
+    border-bottom: 1px solid white;
+}
+
+.form-header {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.form-container {
+    margin-top: 0px !important;
+    padding-right: 30px !important;
+    padding-left: 30px !important;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    background-color: darkgrey;
+    border: 2px solid black;
+}
+
+.custom-card {
+    width: 250px;
+    height: 250px !important;
+    border-radius: 50px !important;
+    cursor: pointer;
+    border: 1px solid #6c757d !important;
+}
+
+.custom-input-title {
+    border: none !important;
+    height: 100px;
+    border-bottom: 1px solid black !important;
+}
+
+.custom-input-body {
+    border: none !important;
+    min-height: 270px !important;
+    overflow: auto;
+}
+
+.custom-container {
+    margin-top: 70px;
+    left: 0px;
+}
+
+.login-header {
+    padding: 5px;
+    border: 1px solid darkgrey;
+    margin-top: 70px !important;
+}
+
+.fade-out {
+    animation: fadeOut 3s ease-in-out forwards;
+    opacity: 1;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    90% { opacity: 1; } /* Stay visible for a while */
+    100% { opacity: 0; display: none; }
+}
+
+/* Footer */
+footer {
+    font-weight: 600;
+}

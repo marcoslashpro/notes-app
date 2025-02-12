@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, redirect, jsonify, flash
 from flask_login import login_required, current_user
 from .models import Note, db
-from .website_funcs import jsonify_notes, find_similar_notes, find_user_notes
+from .website_funcs import jsonify_notes, find_similar_notes, find_user_notes, update_note
 from sqlalchemy import func
 from .service import NoteService 
 
@@ -77,6 +77,18 @@ def create_note():
 @login_required
 def get_note(note_id: int):
     note = Note.query.get(note_id)
+
+    if request.method == "POST":
+        title = request.form.get('title')
+        content = request.form.get('content')
+        updated_note = update_note(
+            id=note_id,
+            title=title,
+            content=content
+            )
+        return render_template('notes.html', user=current_user, note=updated_note)
+
+
     if note:
         return render_template('notes.html', user=current_user, note=note)
     else:

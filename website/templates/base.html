@@ -21,7 +21,7 @@
         <div class="collapse navbar-collapse" id="_navbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('views.display_note') }}">Take Notes</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Ask AI</a></li>
+                <a role="button" class="nav-link" data-bs-toggle="collapse" data-bs-target="#chatWindow" aria-expanded="false">Ask AI</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Profile</a>
                     <ul class="dropdown-menu">
@@ -58,7 +58,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="container-fluid under-nav h-100 fade-out">
+<div class="container under-nav h-100 fade-out">
     <div class="row">
         <div class="col text-center">
             <div class="alert alert-{% if category == 'error' %}danger{% else %}success{% endif %} fade show fade-out"
@@ -74,12 +74,39 @@
 {% endwith %}
 
 
-{% block content %}{% endblock %}
+<!-- AI chat window -->
+<div class="vstack text-bg-dark p-3">
 
-<!-- Footer -->
-<footer class="text-center py-3 bg-dark mt-5">
-    <p class="mb-0 text-secondary">&copy; I'll never quit 'til I make it.</p>
-</footer>
+  <!-- Collapsible Chat Window -->
+  <div id="chatWindow" class="collapse chat-container bg-dark">
+    
+    <!-- Messages -->
+    <div class="d-flex flex-column flex-grow-1 overflow-auto p-2 scroll-auto" id="messageBox">
+        <template id="aiMessageTemplate">
+            <div class="d-flex flex-row justify-content-start">
+                <div class="ai-message"></div>
+            </div>
+        </template>
+    </div>
+    <template id="userMessageTemplate">
+        <div class="d-flex flex-row justify-content-end">
+            <div class="human-message" id="userMessage"></div>
+        </div>
+    </template>
+
+    <!-- Input Bar (Fixed at Bottom) -->
+    <div class="d-flex flex-column">
+        <footer class="input-container d-flex align-items-center bg-dark p-2">
+          <input type="text" class="form-control flex-grow-1 me-2" placeholder="Type a message..." id="chatInput">
+          <button onclick="sendMessage()" class="btn btn-secondary">Send</button>
+        </footer>
+    </div>
+</div>
+
+
+
+
+{% block content %}{% endblock %}
 
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 

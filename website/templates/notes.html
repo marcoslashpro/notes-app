@@ -22,8 +22,7 @@ Create note
 
             <!-- Note Textarea -->
             <textarea class="form-control mb-3 custom-input-body text-bg-secondary text-dark" 
-                      name="content" id="noteContent" placeholder="Let it out..." rows="6"
-                      onkeydown="return event.key !== 'Enter';">{% if note %}{{ note.note_content }}{% endif %}</textarea>
+                      name="content" id="noteContent" placeholder="Let it out..." rows="6">{% if note %}{{ note.note_content }}{% endif %}</textarea>
 
             <!-- Save Button -->
             <button type="submit" class="btn btn-dark w-100 custom-btn" id='saveNoteButton' action="{{ url_for('views.create_note') }}">Save</button>

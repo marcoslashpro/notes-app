@@ -29,3 +29,16 @@ def find_user_notes(notes: list[Note]) -> list[Note]:
 
 
 	return matched_user_notes
+
+
+def update_note(id, content, title) -> Note:
+	try:
+		note = Note.query.get(id)
+		if note:
+			note.note_content = content
+			note.note_title = title
+			db.session.commit()
+			return note
+	except Exception as e:
+		db.session.rollback()
+		print(f'Error: {e}')

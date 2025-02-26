@@ -116,7 +116,7 @@ class SignUpInput(UserService):
     def __init__(self, email, username, password=None, passw2=None):
         self.email = email
         self.username = username
-        self.password = password
+        self.password = passw1
         self.passw2 = passw2
 
 
@@ -125,13 +125,13 @@ class SignUpInput(UserService):
             flash('Missing email', 'error')
         elif not self.username:
             flash('Missing username', 'error')
-        elif not self.password or not self.passw2:
+        elif not self.passw1 or not self.passw2:
             flash('Missing password', 'error')
         elif len(self.username) < 5:
             flash('Username must be at least 6 characters', 'error')
-        elif len(self.password) < 7:
+        elif len(self.passw1) < 7:
             flash('Password must be at least 8 characters', 'error')
-        elif self.password != self.passw2:
+        elif self.passw1 != self.passw2:
             flash("Passwords don't match", 'error')
 
         # Email and Password validations to be added
@@ -146,7 +146,7 @@ class SignUpInput(UserService):
 
     def hash_password(self):
         try:
-            hashed_password = generate_password_hash(self.password, method='pbkdf2:sha256', salt_length=16)
+            hashed_password = generate_password_hash(self.passw1, method='pbkdf2:sha256', salt_length=16)
             if hashed_password:
                 return hashed_password
             else:

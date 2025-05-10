@@ -116,7 +116,7 @@ class SignUpInput(UserService):
     def __init__(self, email, username, password=None, passw2=None):
         self.email = email
         self.username = username
-        self.password = passw1
+        self.password = password
         self.passw2 = passw2
 
 

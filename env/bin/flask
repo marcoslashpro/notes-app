@@ -1,4 +1,4 @@
-#!/home/tambascomarco35/Training/Testapp/env/bin/python3
+#!/home/marco/Projects/notes-app/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

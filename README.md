@@ -23,6 +23,12 @@ It's a lightweight model by `HuggingFace`, so it should work on almost any devic
 If, in any case, you would like to use a different model instead, you can find it in `src/app/website/routes/agent.py` and just change the `Jarvis` model.
 
 ## Installation
+Before getting started, make sure to have an active `virtualenv`:
+```
+python3 -m venv env
+source env/bin/activate
+```
+
 The installation process is quite easy:
 
 1. Clone the repository and cd into it:

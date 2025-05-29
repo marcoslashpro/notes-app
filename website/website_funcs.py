@@ -1,9 +1,9 @@
 from flask_login import current_user
 from .models import Note, User, db
-from flask import jsonify
+from flask import jsonify, flash
 from sqlalchemy.sql import func
 
-def jsonify_notes(notes: Note):
+def jsonify_notes(notes: list[Note]):
 	list_of_notes: list[dict] = []
 	for note in notes:
 		note_dict = {"id": note.id,"title": note.note_title, "content": note.note_content}
@@ -31,7 +31,7 @@ def find_user_notes(notes: list[Note]) -> list[Note]:
 	return matched_user_notes
 
 
-def update_note(id, content, title) -> Note:
+def update_note(id, content, title) -> Note | None:
 	try:
 		note = Note.query.get(id)
 		if note:
@@ -39,6 +39,8 @@ def update_note(id, content, title) -> Note:
 			note.note_title = title
 			db.session.commit()
 			return note
+		else:
+			flash('No matching notes found', 'error')
 	except Exception as e:
 		db.session.rollback()
 		print(f'Error: {e}')

@@ -1,3 +1,4 @@
+from typing import Optional
 from .models import Note, User, db
 from flask_login import current_user
 from flask import flash
@@ -22,10 +23,14 @@ class NoteService:
     def add_note(note_title: str, note_content: str) -> bool:
         """Add a new note for the current user"""
         try:
-            new_note = Note(user_id=current_user.id, note_title=note_title, note_content=note_content)
+            new_note = Note(
+                user_id=current_user.id,  # type: ignore[call-args]
+                note_title=note_title,  # type: ignore[call-args]
+                note_content=note_content  # type: ignore[call-args]
+                )
             db.session.add(new_note)
             db.session.commit()
-            return new_note
+            return True
         except SQLAlchemyError as e:
             flash(f'Error: {e}', 'error')
             return False
@@ -36,7 +41,7 @@ class NoteService:
         return Note.query.order_by(Note.date.desc()).first()
 
     @staticmethod
-    def get_note_by_id(note_id: int) -> Note:
+    def get_note_by_id(note_id: int) -> Note | None:
         """Retrieve a note by its ID"""
         try:
             note = Note.query.get(note_id)
@@ -60,32 +65,18 @@ class NoteService:
 
 
 class UserService(User):
-
-    @staticmethod
-    def user_exists(email) -> bool:
-        try:
-            user = User.query.filter_by(email=email).first()
-            if user:
-                return user
-            else:
-                return None
-        except Exception as e:
-            return {f'Error: {e}'} #to be logged
-
-
     @staticmethod
     def create_User(email: str, username: str, password: str) -> User:
-        try:
-            new_user = User(email=email, username=username, password=password)
-            if not UserService.is_username_taken():
-                if new_user:
-                    db.session.add(new_user)
-                    db.session.commit()
-                else:
-                    return None
-        except Exception as e:
-            return f'Error: {e}'
+        new_user = User(email=email, username=username, password=password)  # type: ignore[call-args]
 
+        if not new_user:
+            raise ValueError(
+                f"Unable to create new user with stats: {email}, {username}, {password}"
+            )
+
+        db.session.add(new_user)
+        db.session.commit()
+        return new_user
 
     @staticmethod
     def is_username_taken(username: str) -> bool:
@@ -101,7 +92,7 @@ class UserService(User):
             print(f'Error: {e}')
             return False
 
-
+    @staticmethod
     def get_user_by_id(user_id: int):
         try:
             user = User.query.get(int(user_id))
@@ -111,42 +102,71 @@ class UserService(User):
             print(f'Error: {e}')
             flash('Error getting the user id', 'error')
 
+    @staticmethod
+    def get_user_by_email(email: str) -> User | None:
+        user: User | None = User.query.filter_by(email=email).first()
+
+        if not user:
+            return
+
+        return user
+
 
 class SignUpInput(UserService):
-    def __init__(self, email, username, password=None, passw2=None):
-        self.email = email
-        self.username = username
-        self.password = password
-        self.passw2 = passw2
 
+    @staticmethod
+    def sign_up(email: str, username: str, password: str) -> tuple[str, Optional[User]]:
+        if UserService.is_username_taken(username):
+            return f'Username {username} is already in use', None
 
-    def is_valid(self) -> bool:
-        if not self.email:
-            flash('Missing email', 'error')
-        elif not self.username:
-            flash('Missing username', 'error')
-        elif not self.passw1 or not self.passw2:
-            flash('Missing password', 'error')
-        elif len(self.username) < 5:
-            flash('Username must be at least 6 characters', 'error')
-        elif len(self.passw1) < 7:
-            flash('Password must be at least 8 characters', 'error')
-        elif self.passw1 != self.passw2:
+        user = UserService.create_User(email, username, SignUpInput.hash_password(password))
+
+        if user:
+            return f'User: {username} created successfully', user
+        else:
+            return f'Was not able to create new user: {username}', None
+
+    @staticmethod
+    def is_input_valid(
+            password: str | None,
+            passw2: str | None,
+            username: str | None,
+            email: str | None
+        ) -> tuple[bool, str]:
+        if not email:
+            return False, 'Missing email'
+
+        elif not username:
+            return False, 'Missing username'
+
+        elif not password or not passw2:
+            return False, 'Missing passwords'
+
+        elif len(username) < 5:
+            return False, 'Username must be at least 6 characters'
+
+        elif len(password) < 7:
+            return False, 'Password must be at least 8 characters'
+
+        elif password != passw2:
             flash("Passwords don't match", 'error')
+            return False, "Passwords don't match"
 
         # Email and Password validations to be added
 
-        elif UserService.user_exists(self.email):
-            flash('User already exists', 'error')
-        elif UserService.is_username_taken(self.username):
-            flash('Username is already taken', 'error')
+        elif UserService.get_user_by_email(email) is not None:
+            return False, f'User with email {email} already exists'
+
+        elif UserService.is_username_taken(username):
+            return False, f'Username {username} already taken'
+
         else:
-            return True
+            return True, ''
 
-
-    def hash_password(self):
+    @staticmethod
+    def hash_password(password: str) -> str:
         try:
-            hashed_password = generate_password_hash(self.passw1, method='pbkdf2:sha256', salt_length=16)
+            hashed_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
             if hashed_password:
                 return hashed_password
             else:
@@ -156,22 +176,13 @@ class SignUpInput(UserService):
 
 
 class LoginInput(SignUpInput):
-    def __init__(self, email, password):
-        super().__init__(
-            email=email,
-            username=None,
-            password=password,
-            )
+    @staticmethod
+    def is_valid(email, password) -> tuple[bool, str]:
+        if not email:
+            return False, 'Missing email'
+        if not password:
+            return False, 'Missing password'
+        if len(password) < 8:
+            return False, 'Password must be at least 8 characters'
 
-
-    def is_valid(self):
-        if not self.email:
-            flash('Missing email', 'error')
-            return False
-        if not self.password:
-            flash('Missing password', 'error')
-            return False
-        if len(self.password) < 7:
-            flash('Password must be at least 8 characters', 'error')
-            return False
-        return True 
+        return True, ''

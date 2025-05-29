@@ -23,11 +23,6 @@ It's a lightweight model by `HuggingFace`, so it should work on almost any devic
 If, in any case, you would like to use a different model instead, you can find it in `src/app/website/routes/agent.py` and just change the `Jarvis` model.
 
 ## Installation
-Before getting started, make sure to have an active `virtualenv`:
-```
-python3 -m venv env
-source env/bin/activate
-```
 
 The installation process is quite easy:
 
@@ -35,11 +30,16 @@ The installation process is quite easy:
 ```
 git clone https://github.com/marcoslashpro/notes-app && cd notes-app
 ```
-2. Install the local package:
+2. Create a `virtualenv`:
+```
+python3 -m venv env
+source env/bin/activate
+``` 
+4. Install the local package:
 ```
 pip install -e .
 ```
-3. Install the requirements:
+4. Install the requirements:
 ```
 pip install -r requirements.txt
 ```

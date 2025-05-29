@@ -2,7 +2,7 @@
 
 A simple note-taking application built to practice frontend design and working with SQLAlchemy models and Flask routing.
 
-Watch a demo [Here](https://studio.youtube.com/video/Xms0o-dmNko/edit)
+Watch a demo [Here](https://youtu.be/Xms0o-dmNko?si=RWvOdRAPN9dqQFq7)
 
 ### Features
 

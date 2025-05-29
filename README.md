@@ -1,6 +1,7 @@
 # NotesApp
 
 A simple note-taking application built to practice frontend design and working with SQLAlchemy models and Flask routing.
+Whatch a demo: [Here](https://studio.youtube.com/video/Xms0o-dmNko/edit)
 
 ### Features
 

@@ -1,5 +1,5 @@
 from flask_login import current_user
-from .models import Note, User, db
+from app.website.models.models import Note, User, db
 from flask import jsonify, flash
 from sqlalchemy.sql import func
 

@@ -1,5 +1,5 @@
 from typing import Optional
-from .models import Note, User, db
+from app.website.models.models import Note, User, db
 from flask_login import current_user
 from flask import flash
 from sqlalchemy.exc import SQLAlchemyError

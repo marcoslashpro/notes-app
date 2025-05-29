@@ -44,3 +44,29 @@ def update_note(id, content, title) -> Note | None:
 	except Exception as e:
 		db.session.rollback()
 		print(f'Error: {e}')
+
+from flask import Flask
+from app.website.models.models import db
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'istillhaventquit'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+
+    db.init_app(app)
+
+    from app.website.routes.views import views
+    from app.website.routes.auth import auth
+    from app.website.routes.agent import agent
+
+
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(agent, url_prefix='/Jarvis/')
+
+    return app
+
+
+def link_db(db, app):
+    with app.app_context():
+        db.create_all()

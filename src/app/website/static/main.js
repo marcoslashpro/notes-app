@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	searchInput.addEventListener('input', function () {
 		let query = searchInput.value;
-		
+
 		if (query.length > 0) {
 			fetch('/search-note', {
 				method: "POST",
@@ -53,15 +53,13 @@ function displayMessage(message, templateId, contentClass, containerId) {
         if (content) { 
             content.textContent = message;
             content.style.display = 'block';
-            
+
             container.appendChild(cloneTemplate);
         } else {
             console.error(`Element with class '${contentClass}' not found in template.`);
         }
     }
 }
-
-
 
 async function sendMessage() {
 	let query = document.getElementById('chatInput');
@@ -133,6 +131,10 @@ async function sendMessage() {
 	readStream();
 }
 
-
-
+let chatInput = document.getElementById('chatInput')
+chatInput.addEventListener('keydown', function(e) {
+	if (e.key == 'Enter') {
+		sendMessage()
+	}
+})
 

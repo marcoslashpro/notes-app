@@ -1,9 +1,9 @@
 from flask import Blueprint, Response, render_template, url_for, request, redirect, jsonify, flash
 from flask_login import login_required, current_user
-from .models import Note, db
-from .website_funcs import jsonify_notes, find_similar_notes, find_user_notes, update_note
+from app.website.models.models import Note, db
+from app.website.website_funcs import jsonify_notes, find_similar_notes, find_user_notes, update_note
 from sqlalchemy import func
-from .service import NoteService
+from app.website.models.service import NoteService
 from sqlalchemy.exc import SQLAlchemyError
 
 
